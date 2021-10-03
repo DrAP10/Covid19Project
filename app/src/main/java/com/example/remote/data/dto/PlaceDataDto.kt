@@ -2,12 +2,12 @@ package com.example.remote.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class CountryDataDto(
+data class PlaceDataDto(
     val id: String,
     val name: String,
     val date: String,
     @SerializedName("today_confirmed") val todayConfirmed: Int,
-    @SerializedName("today_death") val todayDeath: Int,
+    @SerializedName("today_deaths") val todayDeaths: Int,
     @SerializedName("today_new_confirmed") val todayNewConfirmed: Int,
     @SerializedName("today_new_deaths") val todayNewDeaths: Int,
     @SerializedName("today_new_open_cases") val todayNewOpenCases: Int,

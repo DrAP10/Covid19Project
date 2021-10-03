@@ -8,7 +8,7 @@ data class CountryDataBo(
     val name: String,
     val date: Date?,
     val todayConfirmed: Int,
-    val todayDeath: Int,
+    val todayDeaths: Int,
     val todayNewConfirmed: Int,
     val todayNewDeaths: Int,
     val todayNewOpenCases: Int,

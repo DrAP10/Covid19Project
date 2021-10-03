@@ -4,6 +4,7 @@ import com.example.CovidApp
 import com.example.remote.data.di.CovidRemoteModule
 import com.example.remote.di.RemoteModule
 import com.example.repository.di.CovidRepositoryModule
+import com.example.ui.di.CovidFragmentBuilder
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -17,6 +18,7 @@ import javax.inject.Singleton
         RemoteModule::class,
         CovidRemoteModule::class,
         CovidRepositoryModule::class,
+        CovidFragmentBuilder::class,
     ]
 )
 

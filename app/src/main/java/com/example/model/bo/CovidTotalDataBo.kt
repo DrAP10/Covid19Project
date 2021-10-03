@@ -6,7 +6,6 @@ import java.util.*
 data class CovidTotalDataBo(
     val date: Date?,
     val name: String,
-    val todayConfirmed: Int,
-    val todayNewDeath: Int,
-    val todayNewRecovered: Int,
+    val confirmed: Int,
+    val deaths: Int,
 )

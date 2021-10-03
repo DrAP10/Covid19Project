@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Covid19Project</string>
+    <string name="date_neutral_label">Date: %1$s</string>
+    <string name="date_from_label">From: %1$s</string>
+    <string name="date_to_label">To: %1$s</string>
+    <string name="data_confirmed_label">Confirmed: %1$d</string>
+    <string name="data_death_label">Deaths: %1$d</string>
+    <string name="total_data_confirmed_label">Total Confirmed:\n%1$d</string>
+    <string name="total_data_death_label">Total deaths:\n%1$d</string>
 </resources>
