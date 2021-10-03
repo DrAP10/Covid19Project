@@ -22,6 +22,13 @@ class CovidApp : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        initComponent()
     }
 
+    private fun initComponent() {
+        DaggerAppComponent.builder()
+            .application(this)
+            .build()
+            .inject(this)
+    }
 }
