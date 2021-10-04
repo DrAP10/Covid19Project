@@ -6,6 +6,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -26,6 +27,8 @@ class RemoteModule {
     @Provides
     fun provideOkHttpClient(context: Context): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .followRedirects(false)
         return clientBuilder.build()
     }
