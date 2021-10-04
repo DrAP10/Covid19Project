@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.util.*
 
 
-data class PlaceDataBo(
+data class RegionDataBo(
     val id: String,
     val name: String,
     var date: Date?,
@@ -14,5 +14,4 @@ data class PlaceDataBo(
     var newDeaths: Int,
     var newOpenCases: Int,
     var newRecovered: Int,
-    val regions: MutableList<RegionDataBo>,
 ) : Serializable

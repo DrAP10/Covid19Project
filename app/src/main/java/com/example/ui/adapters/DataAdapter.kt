@@ -10,6 +10,7 @@ import com.example.databinding.TotalDataListItemBinding
 import com.example.model.bo.CovidTotalDataBo
 import com.example.model.bo.DataResponseBo
 import com.example.model.bo.PlaceDataBo
+import com.example.model.bo.RegionDataBo
 
 
 class DataAdapter(private val listener: DataListListener) :
@@ -22,14 +23,11 @@ class DataAdapter(private val listener: DataListListener) :
         notifyDataSetChanged()
     }
 
-    fun updateData(dataResponse: DataResponseBo) {
-        val newData = mutableListOf<Any>()
-        dataResponse.total?.let { newData.add(it) }
-        newData.addAll(dataResponse.placesData)
-
+    fun updateData(newData: List<Any>) {
         val diffCallback = DataListDiffCallback(this.data, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
+        this.data.clear()
         this.data.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
@@ -41,6 +39,12 @@ class DataAdapter(private val listener: DataListListener) :
                 if (item is PlaceDataBo) {
                     holder.bind(item)
                     holder.itemView.setOnClickListener { listener.onItemSelected(item) }
+                }
+            }
+            is RegionDataViewHolder -> {
+                if (item is RegionDataBo) {
+                    holder.bind(item)
+                    holder.itemView.setOnClickListener { listener.onRegionSelected(item) }
                 }
             }
             is TotalDataViewHolder -> {
@@ -58,17 +62,33 @@ class DataAdapter(private val listener: DataListListener) :
             DATA_VIEW_TYPE -> DataViewHolder(
                 DataListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
+            REGION_DATA_VIEW_TYPE -> RegionDataViewHolder(
+                DataListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
             else -> TotalDataViewHolder(
                 TotalDataListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
 
     override fun getItemViewType(position: Int): Int =
-        if (data[position] is PlaceDataBo) DATA_VIEW_TYPE else TOTAL_DATA_VIEW_TYPE
+        when(data[position]) {
+            is PlaceDataBo -> DATA_VIEW_TYPE
+            is RegionDataBo -> REGION_DATA_VIEW_TYPE
+            else -> TOTAL_DATA_VIEW_TYPE
+        }
 
     class DataViewHolder(private val binding: DataListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: PlaceDataBo) {
+            binding.name.text = item.name
+            binding.confirmed.text = binding.root.context.getString(R.string.data_confirmed_label, item.confirmed)
+            binding.death.text = binding.root.context.getString(R.string.data_death_label, item.deaths)
+        }
+    }
+
+    class RegionDataViewHolder(private val binding: DataListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: RegionDataBo) {
             binding.name.text = item.name
             binding.confirmed.text = binding.root.context.getString(R.string.data_confirmed_label, item.confirmed)
             binding.death.text = binding.root.context.getString(R.string.data_death_label, item.deaths)
@@ -100,10 +120,12 @@ class DataAdapter(private val listener: DataListListener) :
     companion object {
         const val DATA_VIEW_TYPE = 0
         const val TOTAL_DATA_VIEW_TYPE = 1
+        const val REGION_DATA_VIEW_TYPE = 2
     }
 
 }
 
 interface DataListListener {
     fun onItemSelected(item: PlaceDataBo)
+    fun onRegionSelected(region: RegionDataBo)
 }

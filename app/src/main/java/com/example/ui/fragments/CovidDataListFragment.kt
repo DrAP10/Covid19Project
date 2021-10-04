@@ -13,10 +13,12 @@ import com.example.R
 import com.example.databinding.DataListFragmentBinding
 import com.example.di.ViewModelFactory
 import com.example.model.bo.PlaceDataBo
+import com.example.model.bo.RegionDataBo
 import com.example.ui.activities.MainActivity
 import com.example.ui.adapters.DataAdapter
 import com.example.ui.adapters.DataListListener
 import com.example.ui.viewmodels.DataListViewModel
+import com.google.android.material.tabs.TabLayout
 import java.util.*
 import javax.inject.Inject
 
@@ -49,7 +51,15 @@ class CovidDataListFragment : BaseFragment() {
 
     private fun configureObservers() {
         viewModel.dataLiveData.observe(viewLifecycleOwner, Observer { result ->
-            mDataAdapter.updateData(result)
+
+            val newData = mutableListOf<Any>()
+            if (viewModel.dataMode == DataListViewModel.DataMode.WORLD_DATA) {
+                result.total?.let { newData.add(it) }
+                newData.addAll(result.placesData)
+            } else {
+                result.placesData.firstOrNull()?.regions?.let { newData.addAll(it) }
+            }
+            mDataAdapter.updateData(newData)
         })
     }
 
@@ -103,12 +113,48 @@ class CovidDataListFragment : BaseFragment() {
         searchButton.setOnClickListener {
             viewModel.getData()
         }
+
+        configureTabLayout()
+
+    }
+
+    private fun DataListFragmentBinding.configureTabLayout() {
+        tabLayout.addTab(tabLayout.newTab().setText("World"))
+        tabLayout.addTab(tabLayout.newTab().setText("Spain"))
+        tabLayout.addOnTabSelectedListener(getTabLayoutListener())
+    }
+
+    private fun getTabLayoutListener(): TabLayout.OnTabSelectedListener {
+        return object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                binding?.let {
+                    when (binding?.tabLayout?.selectedTabPosition) {
+                        0 -> viewModel.dataMode = DataListViewModel.DataMode.WORLD_DATA
+                        else -> viewModel.dataMode = DataListViewModel.DataMode.SPAIN_DATA
+                    }
+                }
+            }
+
+        }
     }
 
     private fun getDataListListener(): DataListListener {
         return object : DataListListener {
             override fun onItemSelected(item: PlaceDataBo) {
-                viewModel.countrySelectedId = item.id
+                viewModel.placeSelectedId = item.id
+                (activity as? MainActivity)?.showDetail()
+            }
+
+            override fun onRegionSelected(region: RegionDataBo) {
+                viewModel.placeSelectedId = region.id
                 (activity as? MainActivity)?.showDetail()
             }
         }

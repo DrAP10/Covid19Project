@@ -20,11 +20,25 @@ class DataListViewModel @Inject constructor(
     var dateFrom: Date = Date()
     var dateTo: Date? = Date()
     var allowDateRange: Boolean = false
-    var countrySelectedId: String? = null
+    var placeSelectedId: String? = null
+    var dataMode: DataMode = DataMode.WORLD_DATA
 
     fun getData() = viewModelScope.launch {
         mutableDataLiveData.postValue(
-            repository.getWorldDataByDateRange(dateFrom, if (allowDateRange) dateTo else null)
+            if (dataMode == DataMode.WORLD_DATA) {
+                repository.getWorldDataByDateRange(dateFrom, if (allowDateRange) dateTo else null)
+            } else {
+                repository.getCountryDataByDateRange(
+                    DataMode.SPAIN_DATA.id,
+                    dateFrom,
+                    if (allowDateRange) dateTo else null
+                )
+            }
         )
+    }
+
+    enum class DataMode(val id: String) {
+        WORLD_DATA(""),
+        SPAIN_DATA("spain")
     }
 }

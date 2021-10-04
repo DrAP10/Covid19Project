@@ -14,7 +14,7 @@ interface CovidWS {
         @Query("date_to") to: String,
     ): DataResponseDto
 
-    @GET("api/country/:country")
+    @GET("api/country/{country}")
     suspend fun getCountryData(
         @Path("country") countryId: String,
         @Query("date_from") from: String,
