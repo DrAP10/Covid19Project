@@ -11,4 +11,6 @@
     <string name="data_new_recovered_label">New recovered: %1$d</string>
     <string name="total_data_confirmed_label">Total Confirmed:\n%1$d</string>
     <string name="total_data_death_label">Total deaths:\n%1$d</string>
+    <string name="world">World</string>
+    <string name="spain">Spain</string>
 </resources>

@@ -3,10 +3,12 @@ package com.example.ui.activities
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.DateUtils
 import com.example.R
 import com.example.databinding.ActivityMainBinding
@@ -36,6 +38,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         inflateFragment(CovidDataListFragment(), false)
         binding.setupScreen()
+        configureObservers()
+    }
+
+    private fun configureObservers() {
+
+        viewModel.dataLiveData.observe(this, Observer {
+            updateScreenTitle()
+        })
+    }
+
+    private fun updateScreenTitle() {
+        title = viewModel.generateScreenTitle()
     }
 
     fun showDetail() {
@@ -87,34 +101,21 @@ class MainActivity : AppCompatActivity() {
             viewModel.getData()
         }
 
-        configureTabLayout()
     }
 
-    private fun ActivityMainBinding.configureTabLayout() {
-        tabLayout.addTab(tabLayout.newTab().setText("World"))
-        tabLayout.addTab(tabLayout.newTab().setText("Spain"))
-        tabLayout.addOnTabSelectedListener(getTabLayoutListener())
-    }
-
-    private fun getTabLayoutListener(): TabLayout.OnTabSelectedListener {
-        return object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                binding?.let {
-                    when (binding?.tabLayout?.selectedTabPosition) {
-                        0 -> viewModel.dataMode = DataListViewModel.DataMode.WORLD_DATA
-                        else -> viewModel.dataMode = DataListViewModel.DataMode.SPAIN_DATA
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            val checked = view.isChecked
+            when (view.getId()) {
+                R.id.radio_world ->
+                    if (checked) {
+                        viewModel.dataMode = DataListViewModel.DataMode.WORLD_DATA
                     }
-                }
+                R.id.radio_spain ->
+                    if (checked) {
+                        viewModel.dataMode = DataListViewModel.DataMode.SPAIN_DATA
+                    }
             }
-
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.DateUtils
 import com.example.model.bo.DataResponseBo
 import com.example.repository.CovidRepository
 import kotlinx.coroutines.launch
@@ -37,8 +38,23 @@ class DataListViewModel @Inject constructor(
         )
     }
 
+    fun generateScreenTitle(): String {
+        val dateText = if (allowDateRange) {
+            "${DateUtils.getApiDateStringFormatted(dateFrom)} to ${DateUtils.getApiDateStringFormatted(dateTo)}"
+        } else {
+            "on ${DateUtils.getApiDateStringFormatted(dateFrom)}"
+        }
+        return "${dataMode.getName()} $dateText"
+    }
+
     enum class DataMode(val id: String) {
         WORLD_DATA(""),
-        SPAIN_DATA("spain")
+        SPAIN_DATA("spain");
+
+        fun getName(): String =
+            when(this) {
+                WORLD_DATA -> "World"
+                SPAIN_DATA -> "Spain"
+            }
     }
 }

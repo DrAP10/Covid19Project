@@ -38,7 +38,6 @@ class CovidDataDetailFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        activity?.title = getString(R.string.app_name)
         viewModel.placeSelectedId = null
         binding = null
     }
