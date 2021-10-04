@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         inflateFragment(CovidDataListFragment(), false)
     }
 
-    fun showDetail(placeData: PlaceDataBo) {
+    fun showDetail() {
         inflateFragment(CovidDataDetailFragment(), true)
     }
 

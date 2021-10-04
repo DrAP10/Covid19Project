@@ -20,9 +20,9 @@ class DataListViewModel @Inject constructor(
     var dateFrom: Date = Date()
     var dateTo: Date? = Date()
     var allowDateRange: Boolean = false
+    var countrySelectedId: String? = null
 
-    fun getWorldData(
-    ) = viewModelScope.launch {
+    fun getData() = viewModelScope.launch {
         mutableDataLiveData.postValue(
             repository.getWorldDataByDateRange(dateFrom, if (allowDateRange) dateTo else null)
         )

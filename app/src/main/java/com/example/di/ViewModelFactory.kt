@@ -2,15 +2,9 @@ package com.example.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ui.viewmodels.SearchFilterViewModel
-import dagger.Binds
-import dagger.MapKey
-import dagger.Module
-import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Singleton
 class ViewModelFactory<T : ViewModel> @Inject constructor(private val viewModelProvider: Provider<T>) :

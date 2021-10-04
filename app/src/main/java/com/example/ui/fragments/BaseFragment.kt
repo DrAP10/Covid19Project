@@ -20,4 +20,9 @@ abstract class BaseFragment : Fragment() {
         newFragment.show(parentFragmentManager, "datePicker")
     }
 
+    fun getDatePickerListener(action: (year: Int, month: Int, day: Int) -> Unit): DatePickerDialog.OnDateSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            action(year, month, day)
+        }
+
 }

@@ -5,6 +5,10 @@
     <string name="date_to_label">To: %1$s</string>
     <string name="data_confirmed_label">Confirmed: %1$d</string>
     <string name="data_death_label">Deaths: %1$d</string>
+    <string name="data_new_confirmed_label">New confirmed: %1$d</string>
+    <string name="data_new_death_label">New deaths: %1$d</string>
+    <string name="data_new_open_cases_label">New open cases: %1$d</string>
+    <string name="data_new_recovered_label">New recovered: %1$d</string>
     <string name="total_data_confirmed_label">Total Confirmed:\n%1$d</string>
     <string name="total_data_death_label">Total deaths:\n%1$d</string>
 </resources>

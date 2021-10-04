@@ -1,13 +1,10 @@
 package com.example.ui.fragments
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +25,7 @@ class CovidDataListFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<DataListViewModel>
-    private val viewModel: DataListViewModel by viewModels { viewModelFactory }
+    private val viewModel: DataListViewModel by activityViewModels { viewModelFactory }
     private var binding: DataListFragmentBinding? = null
     private lateinit var mDataAdapter: DataAdapter
 
@@ -46,6 +43,7 @@ class CovidDataListFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding?.allowDateRange?.setOnCheckedChangeListener(null)
         binding = null
     }
 
@@ -60,6 +58,8 @@ class CovidDataListFragment : BaseFragment() {
 
         dateFrom.text = getString(R.string.date_neutral_label, DateUtils.getApiDateStringFormatted(viewModel.dateFrom))
         dateTo.text = getString(R.string.date_to_label, DateUtils.getApiDateStringFormatted(viewModel.dateTo))
+        dateTo.visibility = if (viewModel.allowDateRange) View.VISIBLE else View.INVISIBLE
+
         dateFrom.setOnClickListener { showDatePickerDialog(getDatePickerListener
             { year, month, day ->
                 val c = Calendar.getInstance()
@@ -91,10 +91,6 @@ class CovidDataListFragment : BaseFragment() {
         allowDateRange.setOnCheckedChangeListener { _, isChecked ->
             viewModel.allowDateRange = isChecked
             dateTo.visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
-            dateFrom.text = getString(
-                if (isChecked) R.string.date_from_label else R.string.date_neutral_label,
-                DateUtils.getApiDateStringFormatted(Date())
-            )
         }
 
         recyclerview.apply {
@@ -105,19 +101,15 @@ class CovidDataListFragment : BaseFragment() {
         }
 
         searchButton.setOnClickListener {
-            viewModel.getWorldData()
+            viewModel.getData()
         }
     }
-
-    private fun getDatePickerListener(action: (year: Int, month: Int, day: Int) -> Unit): DatePickerDialog.OnDateSetListener =
-        DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            action(year, month, day)
-        }
 
     private fun getDataListListener(): DataListListener {
         return object : DataListListener {
             override fun onItemSelected(item: PlaceDataBo) {
-                (activity as? MainActivity)?.showDetail(item)
+                viewModel.countrySelectedId = item.id
+                (activity as? MainActivity)?.showDetail()
             }
         }
     }
