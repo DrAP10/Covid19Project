@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.DateUtils
+import com.example.domain.GetCountryDataUseCase
+import com.example.domain.GetWorldDataUseCase
 import com.example.model.bo.DataResponseBo
 import com.example.repository.CovidRepository
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import java.util.*
 import javax.inject.Inject
 
 class DataListViewModel @Inject constructor(
-    private val repository: CovidRepository
+    private val getWorldDataUseCase: GetWorldDataUseCase,
+    private val getCountryDataUseCase: GetCountryDataUseCase,
 ) : ViewModel() {
 
     private val mutableDataLiveData: MutableLiveData<DataResponseBo> = MutableLiveData()
@@ -25,11 +28,12 @@ class DataListViewModel @Inject constructor(
     var dataMode: DataMode = DataMode.WORLD_DATA
 
     fun getData() = viewModelScope.launch {
+
         mutableDataLiveData.postValue(
             if (dataMode == DataMode.WORLD_DATA) {
-                repository.getWorldDataByDateRange(dateFrom, if (allowDateRange) dateTo else null)
+                getWorldDataUseCase.invoke(dateFrom, if (allowDateRange) dateTo else null)
             } else {
-                repository.getCountryDataByDateRange(
+                getCountryDataUseCase.invoke(
                     DataMode.SPAIN_DATA.id,
                     dateFrom,
                     if (allowDateRange) dateTo else null

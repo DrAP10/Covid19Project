@@ -1,6 +1,7 @@
 package com.example.di
 
 import com.example.CovidApp
+import com.example.domain.di.CovidUseCaseModule
 import com.example.remote.data.di.CovidRemoteModule
 import com.example.remote.di.RemoteModule
 import com.example.repository.di.CovidRepositoryModule
@@ -21,6 +22,7 @@ import javax.inject.Singleton
         CovidRepositoryModule::class,
         ActivityModule::class,
         CovidFragmentBuilder::class,
+        CovidUseCaseModule::class,
     ]
 )
 
