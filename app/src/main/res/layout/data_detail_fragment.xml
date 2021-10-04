@@ -6,63 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.CovidDataListFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
-
-    <TextView
-        android:id="@+id/date_from"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/date_to"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-        android:padding="10dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:text="From: 2021-09-10"/>
-
-    <TextView
-        android:id="@+id/date_to"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-        android:padding="10dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        tools:text="To: 2021-09-11" />
-
-    <CheckBox
-        android:id="@+id/allow_date_range"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/search_button"
-        app:layout_constraintBottom_toBottomOf="@id/search_button"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Use date range"/>
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/date_from"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        android:text="Search"/>
 
     <TextView
         android:id="@+id/name"
@@ -74,7 +23,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/allow_date_range"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Spain" />
 
 
